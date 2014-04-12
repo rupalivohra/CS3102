@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 
 public class Scraper {
 
@@ -13,25 +14,44 @@ public class Scraper {
 
 	public static void main(String[] args) throws Exception {
 		Scraper http = new Scraper();
+		Scanner keyboard = new Scanner(System.in);
 		System.out.println("Testing 1 - Send Http GET request");
 
-		http.sendGet("water");
-
+		System.out.print("Enter your wikipedia article title: ");
+		String article = keyboard.nextLine();
+		if (article.contains(" "))
+			article = article.replace(" ", "_");
+		http.sendGet(article);
+		keyboard.close();
 	}
 
 	// HTTP GET request
 	private String sendGet(String articleTitle) throws Exception {
+		String notUnderScore = articleTitle.replace("_", " ");
+
+		String[] token = notUnderScore.split(" ");
+		for (int i = 0; i < token.length; i++) {
+			char[] digit = token[i].toCharArray();
+			digit[0] = Character.toUpperCase(digit[0]);
+			token[i] = new String(digit);
+		}
+
+		String firstWord = "";
+		for (int i = 0; i < token.length; ++i) {
+			if (i == token.length - 1)
+				firstWord = firstWord + token[i];
+			else {
+				firstWord = firstWord + token[i] + " ";
+			}
+		}
+
 		String url = "http://en.wikipedia.org/wiki/Special:Export/"
-				+ articleTitle;
+				+ firstWord.replace(" ", "_");
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		con.setRequestMethod("GET");
 		con.setRequestProperty("User-Agent", USER_AGENT);
-
-		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				con.getInputStream()));
@@ -39,13 +59,12 @@ public class Scraper {
 		StringBuffer response = new StringBuffer();
 
 		Writer writer = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(articleTitle + ".txt"), "utf-8"));
+				new FileOutputStream(firstWord.replace(" ", "_") + ".txt"),
+				"utf-8"));
 
 		boolean start = false;
 		while ((inputLine = in.readLine()) != null) {
-			if (inputLine.startsWith("'''"
-					+ articleTitle.substring(0, 1).toUpperCase()
-					+ articleTitle.substring(1) + "'''"))
+			if (inputLine.startsWith("'''" + firstWord + "'''"))
 				start = true;
 
 			inputLine = inputLine.replaceAll("[^\\w\\s\\_]", "");
@@ -60,6 +79,7 @@ public class Scraper {
 				}
 			}
 		}
+
 		in.close();
 		writer.close();
 
