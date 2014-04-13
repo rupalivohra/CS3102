@@ -68,7 +68,7 @@ public class Scraper {
 			
 			String url2 = url+key;
 			//Some assistance from Greg Colella here
-			Document doc = Jsoup.connect(url2)
+			Document doc = Jsoup.connect(url2) //something might be causing aproblem with this expression; the error occurred at line 73
 					 .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
 				      .referrer("http://www.google.com")
 				      .get();
