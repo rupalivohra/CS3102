@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,20 +83,13 @@ public class Scraper {
 		ArrayList<String> lst = new ArrayList<String>();
 		while (scan.hasNext()) {
 			String list = scan.next();
-			if (list.startsWith("'''"))
-				lst.add(list.substring(3));
-			else if (list.endsWith("'''"))
-				lst.add(list.substring(0, list.length() - 4));
-			else if (list.startsWith("''"))
-				lst.add(list.substring(2));
-			else if (list.endsWith("''"))
-				lst.add(list.substring(0, list.length() - 3));
-			else if (list.startsWith("'"))
-				lst.add(list.substring(1));
-			else if (list.endsWith("'"))
-				lst.add(list.substring(0, list.length() - 2));
-			else
-				lst.add(list);
+			while (list.startsWith("'")) {
+				list = list.substring(1);
+			}
+			while (list.endsWith("'")) {
+				list = list.substring(0, list.length() - 2);
+			}
+			lst.add(list);
 		}
 		ArrayList<String> bad = new ArrayList<String>();
 		bad.add("Link");
@@ -139,8 +133,14 @@ public class Scraper {
 	}
 
 	public static String firstGuessURL(String articletitle) {
-		return "http://en.wikipedia.org/wiki/Special:Export/"
-				+ URLEncoder.encode(articletitle.replace(" ", "_"));
+		try {
+			return "http://en.wikipedia.org/wiki/Special:Export/"
+					+ URLEncoder
+							.encode(articletitle.replace(" ", "_"), "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	public static String findCorrectURL(String articletitle) {
