@@ -69,6 +69,13 @@ public class Scraper {
 			System.out
 					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 		}
+		
+//		for (Entry<String, Node> entry : storage.entrySet()) {
+//			if (entry.getValue().getConnected().size() > 0) {
+//				System.out.print(entry.getValue());
+//				System.out.println(entry.getValue().getConnected());
+//			}
+//		}
 	}
 
 	public static List<String> getWords(String raw) {

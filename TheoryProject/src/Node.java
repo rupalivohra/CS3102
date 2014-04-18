@@ -1,6 +1,5 @@
 //import java.util.ArrayList;
 import java.util.ArrayList;
-import java.util.TreeSet;
 	
 	//Nodes = words; edges go between related words (accessible from array list).
 	public class Node {
@@ -70,7 +69,7 @@ import java.util.TreeSet;
 				this.incDegree();
 				n.getConnected().add(this);
 				n.incDegree();
-				System.out.println("Connected " + this + " to " + n);
+//				System.out.println("Connected " + this + " to " + n);
 			}
 		}
 
