@@ -1,10 +1,13 @@
+//import java.util.ArrayList;
 import java.util.ArrayList;
+import java.util.TreeSet;
 	
 	//Nodes = words; edges go between related words (accessible from array list).
 	public class Node {
 		private int degree;
 		private String word;
 		private ArrayList<Node> connected;
+		//private ArrayList<Node> connected;
 		private int frequency;
 		
 		public Node() {
@@ -49,9 +52,10 @@ import java.util.ArrayList;
 		}
 		
 		public ArrayList<String> getConnectedString() {
+			//TreeSet<String> ret = new TreeSet<String>();
 			ArrayList<String> ret = new ArrayList<String>();
-			for (int i = 0; i < this.connected.size(); i++) {
-				ret.add(this.connected.get(i).getWord());
+			for (Node n : this.connected) {
+				ret.add(n.getWord());
 			}
 			return ret;
 		}
@@ -61,10 +65,13 @@ import java.util.ArrayList;
 		}
 		
 		public void connectNode(Node n) { //avoid the infinite loop!!
-			connected.add(n);
-			this.incDegree();
-			n.getConnected().add(this);
-			n.incDegree();
+			if (!connected.contains(n)) {
+				connected.add(n);
+				this.incDegree();
+				n.getConnected().add(this);
+				n.incDegree();
+				System.out.println("Connected " + this + " to " + n);
+			}
 		}
 
 		@Override

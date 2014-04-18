@@ -59,14 +59,9 @@ public class Scraper {
 			if (div != null) {
 				for (Element e : div) {
 					String thiselement = e.text();
+					//if both the synonym and the original word are in the article
 					if (storage.containsKey(thiselement)) {
-						if (!storage.get(entry.getValue()).getConnectedString()
-								.contains(thiselement)) {
-							storage.get(thiselement).connectNode(
-									entry.getValue());
-							System.out.println("Connected " + entry.getValue()
-									+ " to synonym: " + thiselement);
-						}
+						storage.get(key).connectNode(storage.get(thiselement));
 					}
 				}
 			}
