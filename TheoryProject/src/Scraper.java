@@ -99,6 +99,24 @@ public class Scraper {
 			}
 		}
 		lst.removeAll(bad);
+		ArrayList<String> commonWords = new ArrayList<String>();
+		commonWords.add("a");
+		commonWords.add("A");
+		commonWords.add("And");
+		commonWords.add("and");
+		commonWords.add("the");
+		commonWords.add("The");
+		commonWords.add("of");
+		commonWords.add("Of");
+		commonWords.add("As");
+		commonWords.add("as");
+
+		for (int i = 0; i < commonWords.size(); ++i) {
+			if (lst.contains(commonWords.get(i))) {
+				lst.remove(commonWords.get(i));
+			}
+		}
+
 		return lst;
 	}
 
