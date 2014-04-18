@@ -84,7 +84,7 @@ public class Scraper {
 				list = list.substring(1);
 			}
 			while (list.endsWith("'")) {
-				list = list.substring(0,list.length()-2);
+				list = list.substring(0, list.length() - 2);
 			}
 			lst.add(list);
 		}
