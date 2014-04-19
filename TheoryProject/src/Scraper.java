@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -22,6 +24,7 @@ public class Scraper {
 		String content = dc.select("text").first().text();
 		System.out.println(getWords(content));
 		List<String> wordList = getWords(content);
+
 		// merging Map.java:
 		TreeMap<String, Node> storage = new TreeMap<String, Node>();
 		for (int i = 0; i < wordList.size(); i++) {
@@ -59,7 +62,8 @@ public class Scraper {
 			if (div != null) {
 				for (Element e : div) {
 					String thiselement = e.text();
-					//if both the synonym and the original word are in the article
+					// if both the synonym and the original word are in the
+					// article
 					if (storage.containsKey(thiselement)) {
 						storage.get(key).connectNode(storage.get(thiselement));
 					}
@@ -69,13 +73,13 @@ public class Scraper {
 			System.out
 					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 		}
-		
-//		for (Entry<String, Node> entry : storage.entrySet()) {
-//			if (entry.getValue().getConnected().size() > 0) {
-//				System.out.print(entry.getValue());
-//				System.out.println(entry.getValue().getConnected());
-//			}
-//		}
+
+		// for (Entry<String, Node> entry : storage.entrySet()) {
+		// if (entry.getValue().getConnected().size() > 0) {
+		// System.out.print(entry.getValue());
+		// System.out.println(entry.getValue().getConnected());
+		// }
+		// }
 	}
 
 	public static List<String> getWords(String raw) {
@@ -104,21 +108,22 @@ public class Scraper {
 			}
 		}
 		lst.removeAll(bad);
+		Scanner s;
 		ArrayList<String> commonWords = new ArrayList<String>();
-		commonWords.add("a");
-		commonWords.add("A");
-		commonWords.add("And");
-		commonWords.add("and");
-		commonWords.add("the");
-		commonWords.add("The");
-		commonWords.add("of");
-		commonWords.add("Of");
-		commonWords.add("As");
-		commonWords.add("as");
+		try {
+			s = new Scanner(new File("commonWords.txt"));
+			while (s.hasNext()) {
+				commonWords.add(s.next());
+			}
+			s.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		for (int i = 0; i < commonWords.size(); ++i) {
 			if (lst.contains(commonWords.get(i))) {
 				lst.remove(commonWords.get(i));
+				i--;
 			}
 		}
 
