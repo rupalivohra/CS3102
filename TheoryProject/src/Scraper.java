@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -40,6 +42,7 @@ public class Scraper {
 		String url = "http://www.thesaurus.com/browse/";
 		for (Entry<String, Node> entry : storage.entrySet()) {
 			String key = entry.getKey();
+			System.out.println("Key: " + key);
 			// Node k = new Node(key);
 			// System.out.println(key);
 			String url2 = url + key;
@@ -52,6 +55,7 @@ public class Scraper {
 						.userAgent(
 								"Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
 						.referrer("http://www.google.com").get();
+//				doc = Jsoup.connect(url2).get();
 				div = doc.select("div.synonyms span.text");// .select("span");
 			} catch (IOException e1) {
 				System.out.println("Could not access url for synonyms");
@@ -60,10 +64,10 @@ public class Scraper {
 			if (div != null) {
 				for (Element e : div) {
 					String thiselement = e.text();
+					// if both the synonym and the original word are in the
+					// article
 					if (storage.containsKey(thiselement)) {
-						storage.get(thiselement).connectNode(entry.getValue());
-						System.out.println("Connected " + entry.getValue()
-								+ " to synonym: " + thiselement);
+						storage.get(key).connectNode(storage.get(thiselement));
 					}
 				}
 			}
@@ -71,6 +75,23 @@ public class Scraper {
 			System.out
 					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 		}
+<<<<<<< HEAD
+		
+		for (Entry<String, Node> entry : storage.entrySet()) {
+			if (entry.getValue().getConnected().size() > 0) {
+				System.out.print("Connected: " + entry.getValue() + "to: ");
+				System.out.println(entry.getValue().getConnected());
+			}
+		}
+=======
+
+		// for (Entry<String, Node> entry : storage.entrySet()) {
+		// if (entry.getValue().getConnected().size() > 0) {
+		// System.out.print(entry.getValue());
+		// System.out.println(entry.getValue().getConnected());
+		// }
+		// }
+>>>>>>> b52b42cece3d16d4b5f12e47b752e3aa153dabe4
 	}
 
 	public static List<String> getWords(String raw) {
@@ -99,21 +120,22 @@ public class Scraper {
 			}
 		}
 		lst.removeAll(bad);
+		Scanner s;
 		ArrayList<String> commonWords = new ArrayList<String>();
-		commonWords.add("a");
-		commonWords.add("A");
-		commonWords.add("And");
-		commonWords.add("and");
-		commonWords.add("the");
-		commonWords.add("The");
-		commonWords.add("of");
-		commonWords.add("Of");
-		commonWords.add("As");
-		commonWords.add("as");
+		try {
+			s = new Scanner(new File("commonWords.txt"));
+			while (s.hasNext()) {
+				commonWords.add(s.next());
+			}
+			s.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		for (int i = 0; i < commonWords.size(); ++i) {
 			if (lst.contains(commonWords.get(i))) {
 				lst.remove(commonWords.get(i));
+				i--;
 			}
 		}
 
