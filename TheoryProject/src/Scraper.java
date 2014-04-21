@@ -54,7 +54,7 @@ public class Scraper {
 						.connect(url2)
 						.userAgent(
 								"Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-						.referrer("http://www.google.com").get();
+						.referrer("http://www.google.com").timeout(0).get();
 //				doc = Jsoup.connect(url2).get();
 				div = doc.select("div.synonyms span.text");// .select("span");
 			} catch (IOException e1) {
@@ -75,15 +75,13 @@ public class Scraper {
 			System.out
 					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 		}
-<<<<<<< HEAD
-		
+	
 		for (Entry<String, Node> entry : storage.entrySet()) {
 			if (entry.getValue().getConnected().size() > 0) {
 				System.out.print("Connected: " + entry.getValue() + "to: ");
 				System.out.println(entry.getValue().getConnected());
 			}
 		}
-=======
 
 		// for (Entry<String, Node> entry : storage.entrySet()) {
 		// if (entry.getValue().getConnected().size() > 0) {
@@ -91,7 +89,6 @@ public class Scraper {
 		// System.out.println(entry.getValue().getConnected());
 		// }
 		// }
->>>>>>> b52b42cece3d16d4b5f12e47b752e3aa153dabe4
 	}
 
 	public static List<String> getWords(String raw) {
