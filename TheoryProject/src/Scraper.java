@@ -41,64 +41,17 @@ public class Scraper {
 				storage.get(wordList.get(i)).incFreq();
 			}
 		}
-<<<<<<< HEAD
 		TreeMap<Integer, String> clo = generateCloud(storage);
 		Cloud c = new Cloud();
 		c.getCloud(clo);
 		c.generate();
 
-		// // Map should be populated with each word as a key
-		// System.out.println(storage.keySet());
-		// // 3. Add related words based on thesaurus
-		// String url = "http://www.thesaurus.com/browse/";
-		// for (Entry<String, Node> entry : storage.entrySet()) {
-		// String key = entry.getKey();
-		// // Node k = new Node(key);
-		// // System.out.println(key);
-		// String url2 = url + key;
-		// // Some assistance from Greg Colella here
-		// Document doc;
-		// Elements div = null;
-		// try {
-		// doc = Jsoup
-		// .connect(url2)
-		// .userAgent(
-		// "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-		// .referrer("http://www.google.com").get();
-		// div = doc.select("div.synonyms span.text");// .select("span");
-		// } catch (IOException e1) {
-		// System.out.println("Could not access url for synonyms");
-		// e1.printStackTrace();
-		// }
-		// if (div != null) {
-		// for (Element e : div) {
-		// String thiselement = e.text();
-		// // if both the synonym and the original word are in the
-		// // article
-		// if (storage.containsKey(thiselement)) {
-		// storage.get(key).connectNode(storage.get(thiselement));
-		// }
-		// }
-		// }
-		// System.out.println();
-		// System.out
-		// .println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
-		// }
-		//
-		// // for (Entry<String, Node> entry : storage.entrySet()) {
-		// // if (entry.getValue().getConnected().size() > 0) {
-		// // System.out.print(entry.getValue());
-		// // System.out.println(entry.getValue().getConnected());
-		// // }
-		// // }
-=======
 		// Map should be populated with each word as a key
 		System.out.println(storage.keySet());
 		// 3. Add related words based on thesaurus
 		String url = "http://www.thesaurus.com/browse/";
 		for (Entry<String, Node> entry : storage.entrySet()) {
 			String key = entry.getKey();
-			System.out.println("Key: " + key);
 			// Node k = new Node(key);
 			// System.out.println(key);
 			String url2 = url + key;
@@ -110,8 +63,7 @@ public class Scraper {
 						.connect(url2)
 						.userAgent(
 								"Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-						.referrer("http://www.google.com").timeout(0).get();
-//				doc = Jsoup.connect(url2).get();
+						.referrer("http://www.google.com").get();
 				div = doc.select("div.synonyms span.text");// .select("span");
 			} catch (IOException e1) {
 				System.out.println("Could not access url for synonyms");
@@ -131,14 +83,13 @@ public class Scraper {
 			System.out
 					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 		}
-	
+
 		for (Entry<String, Node> entry : storage.entrySet()) {
 			if (entry.getValue().getConnected().size() > 0) {
 				System.out.print("Connected: " + entry.getValue() + "to: ");
 				System.out.println(entry.getValue().getConnected());
 			}
 		}
->>>>>>> master
 	}
 
 	public static List<String> getWords(String raw) {
