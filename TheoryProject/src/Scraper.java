@@ -1,6 +1,3 @@
-import java.awt.BorderLayout;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,8 +8,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
-
-import javax.swing.JFrame;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,7 +36,11 @@ public class Scraper {
 				storage.get(wordList.get(i)).incFreq();
 			}
 		}
-		TreeMap<Integer, String> clo = generateCloud(storage);
+		ArrayList<Node> clo = new ArrayList<Node>();
+		for (Node n : storage.values()) {
+			if (!n.getWord().equals(""))
+				clo.add(n);
+		}
 		Cloud c = new Cloud();
 		c.getCloud(clo);
 		c.generate();
@@ -53,7 +52,7 @@ public class Scraper {
 		for (Entry<String, Node> entry : storage.entrySet()) {
 			String key = entry.getKey();
 			// Node k = new Node(key);
-			// System.out.println(key);
+			//		System.out.println(key);
 			String url2 = url + key;
 			// Some assistance from Greg Colella here
 			Document doc;
@@ -99,13 +98,18 @@ public class Scraper {
 		ArrayList<String> lst = new ArrayList<String>();
 		while (scan.hasNext()) {
 			String list = scan.next();
-			while (list.startsWith("'")) {
-				list = list.substring(1);
+			if (!list.equals("")) {
+				while (list.startsWith("'")) {
+					list = list.substring(1);
+				}
+				while (list.endsWith("'")) {
+					list = list.substring(0, list.length() - 2);
+				}
+				if (list.endsWith("'s")) {
+					list = list.replace("'s", "");
+				}
+				lst.add(list);
 			}
-			while (list.endsWith("'")) {
-				list = list.substring(0, list.length() - 2);
-			}
-			lst.add(list);
 		}
 		ArrayList<String> bad = new ArrayList<String>();
 		bad.add("Link");
@@ -180,22 +184,5 @@ public class Scraper {
 
 	public static String findCorrectURL(String articletitle) {
 		return followRedirects(firstGuessURL(articletitle));
-	}
-
-	public static TreeMap<Integer, String> generateCloud(
-			TreeMap<String, Node> source) {
-		TreeMap<Integer, Node> cloud = new TreeMap<Integer, Node>();
-		TreeMap<Integer, String> setWeights = new TreeMap<Integer, String>();
-		for (Node n : source.values()) {
-			if (!n.getWord().equals("")) {
-				cloud.put(n.getFreq(), n);
-			}
-		}
-		System.out.println(cloud.toString());
-		for (Integer s : cloud.keySet()) {
-			setWeights.put(s, cloud.get(s).getWord());
-		}
-		System.out.println(setWeights.toString());
-		return setWeights;
 	}
 }
