@@ -1,3 +1,6 @@
+import java.awt.BorderLayout;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +11,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.TreeMap;
+
+import javax.swing.JFrame;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -36,50 +41,55 @@ public class Scraper {
 				storage.get(wordList.get(i)).incFreq();
 			}
 		}
-		// Map should be populated with each word as a key
-		System.out.println(storage.keySet());
-		// 3. Add related words based on thesaurus
-		String url = "http://www.thesaurus.com/browse/";
-		for (Entry<String, Node> entry : storage.entrySet()) {
-			String key = entry.getKey();
-			// Node k = new Node(key);
-			// System.out.println(key);
-			String url2 = url + key;
-			// Some assistance from Greg Colella here
-			Document doc;
-			Elements div = null;
-			try {
-				doc = Jsoup
-						.connect(url2)
-						.userAgent(
-								"Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-						.referrer("http://www.google.com").get();
-				div = doc.select("div.synonyms span.text");// .select("span");
-			} catch (IOException e1) {
-				System.out.println("Could not access url for synonyms");
-				e1.printStackTrace();
-			}
-			if (div != null) {
-				for (Element e : div) {
-					String thiselement = e.text();
-					// if both the synonym and the original word are in the
-					// article
-					if (storage.containsKey(thiselement)) {
-						storage.get(key).connectNode(storage.get(thiselement));
-					}
-				}
-			}
-			System.out.println();
-			System.out
-					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
-		}
+		TreeMap<Integer, String> clo = generateCloud(storage);
+		Cloud c = new Cloud();
+		c.getCloud(clo);
+		c.generate();
 
+		// // Map should be populated with each word as a key
+		// System.out.println(storage.keySet());
+		// // 3. Add related words based on thesaurus
+		// String url = "http://www.thesaurus.com/browse/";
 		// for (Entry<String, Node> entry : storage.entrySet()) {
-		// if (entry.getValue().getConnected().size() > 0) {
-		// System.out.print(entry.getValue());
-		// System.out.println(entry.getValue().getConnected());
+		// String key = entry.getKey();
+		// // Node k = new Node(key);
+		// // System.out.println(key);
+		// String url2 = url + key;
+		// // Some assistance from Greg Colella here
+		// Document doc;
+		// Elements div = null;
+		// try {
+		// doc = Jsoup
+		// .connect(url2)
+		// .userAgent(
+		// "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+		// .referrer("http://www.google.com").get();
+		// div = doc.select("div.synonyms span.text");// .select("span");
+		// } catch (IOException e1) {
+		// System.out.println("Could not access url for synonyms");
+		// e1.printStackTrace();
+		// }
+		// if (div != null) {
+		// for (Element e : div) {
+		// String thiselement = e.text();
+		// // if both the synonym and the original word are in the
+		// // article
+		// if (storage.containsKey(thiselement)) {
+		// storage.get(key).connectNode(storage.get(thiselement));
 		// }
 		// }
+		// }
+		// System.out.println();
+		// System.out
+		// .println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+		// }
+		//
+		// // for (Entry<String, Node> entry : storage.entrySet()) {
+		// // if (entry.getValue().getConnected().size() > 0) {
+		// // System.out.print(entry.getValue());
+		// // System.out.println(entry.getValue().getConnected());
+		// // }
+		// // }
 	}
 
 	public static List<String> getWords(String raw) {
@@ -170,5 +180,22 @@ public class Scraper {
 
 	public static String findCorrectURL(String articletitle) {
 		return followRedirects(firstGuessURL(articletitle));
+	}
+
+	public static TreeMap<Integer, String> generateCloud(
+			TreeMap<String, Node> source) {
+		TreeMap<Integer, Node> cloud = new TreeMap<Integer, Node>();
+		TreeMap<Integer, String> setWeights = new TreeMap<Integer, String>();
+		for (Node n : source.values()) {
+			if (!n.getWord().equals("")) {
+				cloud.put(n.getFreq(), n);
+			}
+		}
+		System.out.println(cloud.toString());
+		for (Integer s : cloud.keySet()) {
+			setWeights.put(s, cloud.get(s).getWord());
+		}
+		System.out.println(setWeights.toString());
+		return setWeights;
 	}
 }
