@@ -57,7 +57,7 @@ class CustomComponent extends JComponent {
 	public void paintComponent(Graphics g) {
 		for (Integer freq : create.keySet()) {
 			g.setFont(new Font("TimesRoman", Font.PLAIN, freq));
-			g.drawString(create.get(freq), freq * freq, freq);
+			g.drawString(create.get(freq), freq * freq, freq*freq);
 		}
 		super.paintComponent(g);
 		g.setColor(Color.red);
