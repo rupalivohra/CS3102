@@ -69,7 +69,7 @@ import java.util.ArrayList;
 				this.incDegree();
 				n.getConnected().add(this);
 				n.incDegree();
-//				System.out.println("Connected " + this + " to " + n);
+				System.out.println("Connected " + this + " to " + n);
 			}
 		}
 
