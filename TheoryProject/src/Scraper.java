@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -41,9 +42,8 @@ public class Scraper {
 			if (!n.getWord().equals(""))
 				clo.add(n);
 		}
-		Cloud c = new Cloud();
-		c.getCloud(clo);
-		c.generate();
+
+		Collections.sort(clo);
 
 		// Map should be populated with each word as a key
 		System.out.println(storage.keySet());
@@ -52,7 +52,7 @@ public class Scraper {
 		for (Entry<String, Node> entry : storage.entrySet()) {
 			String key = entry.getKey();
 			// Node k = new Node(key);
-			//		System.out.println(key);
+			// System.out.println(key);
 			String url2 = url + key;
 			// Some assistance from Greg Colella here
 			Document doc;
@@ -62,7 +62,7 @@ public class Scraper {
 						.connect(url2)
 						.userAgent(
 								"Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-						.referrer("http://www.google.com").get();
+						.referrer("http://www.google.com").timeout(0).get();
 				div = doc.select("div.synonyms span.text");// .select("span");
 			} catch (IOException e1) {
 				System.out.println("Could not access url for synonyms");
