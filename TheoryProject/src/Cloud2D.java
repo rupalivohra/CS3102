@@ -11,9 +11,9 @@ public class Cloud2D {
 	public static void generate() {
 //		Frame gc = new Frame();
 		JFrame frame = new JFrame("Title here");
-		frame.setSize(1650, 1080);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//		Rectangle bounds = frame.getBounds();
+		frame.setSize(1600, 900);
+//		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		Rectangle bounds = frame.getBounds();
 		frame.setLocation(0, 0);
 //		System.out.println(bounds);
 //		f.setDefaultLookAndFeelDecorated(true);
@@ -22,10 +22,10 @@ public class Cloud2D {
 		String s = "test";
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Font[] fonts = ge.getAllFonts();
-//		for (int i = 0; i < fonts.length; i++) {
-//			System.out.println(i + ": " + fonts[i]);
-//		}
-		Font font = new Font("RupaliHandwrite", Font.PLAIN, 100);
+		for (int i = 0; i < fonts.length; i++) {
+			System.out.println(i + ": " + fonts[i]);
+		}
+		Font font = new Font("Joker", Font.PLAIN, 100);
 //		Font f = new Font(fonts[377]);
 		g.setFont(font);
 		g.drawString(s, 500, 500);

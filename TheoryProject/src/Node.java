@@ -9,11 +9,13 @@ public class Node implements Comparable<Node> {
 	private ArrayList<Node> connected;
 	// private ArrayList<Node> connected;
 	private int frequency;
+	private int fontSize;
 
 	public Node() {
 		this.frequency = 1;
 		this.degree = 0;
 		connected = new ArrayList<Node>();
+		this.fontSize = 0;
 	}
 
 	public Node(String w) {
@@ -21,8 +23,17 @@ public class Node implements Comparable<Node> {
 		this.degree = 0;
 		this.frequency = 1;
 		connected = new ArrayList<Node>();
+		this.fontSize = 0;
 	}
-
+	
+	public int getFontSize() {
+		return this.fontSize;
+	}
+	
+	public void setFontSize(int size) {
+		this.fontSize = size;
+	}
+	
 	public int getDegree() {
 		return this.degree;
 	}
