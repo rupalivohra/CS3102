@@ -25,7 +25,7 @@ public class Cloud2D {
 		for (int i = 0; i < fonts.length; i++) {
 			System.out.println(i + ": " + fonts[i]);
 		}
-		Font font = new Font("Joker", Font.PLAIN, 100);
+		Font font = new Font("A Yummy Apology", Font.PLAIN, 100);
 //		Font f = new Font(fonts[377]);
 		g.setFont(font);
 		g.drawString(s, 500, 500);
