@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -41,6 +42,7 @@ public class Scraper {
 			if (!n.getWord().equals(""))
 				clo.add(n);
 		}
+		Collections.sort(clo);
 
 		Cloud2D c = new Cloud2D();
 		c.generate();
@@ -52,7 +54,7 @@ public class Scraper {
 		for (Entry<String, Node> entry : storage.entrySet()) {
 			String key = entry.getKey();
 			// Node k = new Node(key);
-			//		System.out.println(key);
+			// System.out.println(key);
 			String url2 = url + key;
 			// Some assistance from Greg Colella here
 			Document doc;
