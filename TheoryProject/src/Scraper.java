@@ -45,7 +45,7 @@ public class Scraper {
 		Collections.sort(clo);
 
 		Cloud2D c = new Cloud2D();
-		c.generate();
+		c.generate(clo);
 
 		// Map should be populated with each word as a key
 		System.out.println(storage.keySet());
