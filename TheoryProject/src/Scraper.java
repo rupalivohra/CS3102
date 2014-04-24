@@ -41,8 +41,10 @@ public class Scraper {
 			if (!n.getWord().equals(""))
 				clo.add(n);
 		}
-		Cloud c = new Cloud();
-		c.getCloud(clo);
+//		Cloud c = new Cloud();
+//		c.getCloud(clo);
+//		c.generate();
+		Cloud2D c = new Cloud2D();
 		c.generate();
 
 		// Map should be populated with each word as a key
@@ -62,7 +64,7 @@ public class Scraper {
 						.connect(url2)
 						.userAgent(
 								"Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-						.referrer("http://www.google.com").get();
+						.referrer("http://www.google.com").timeout(0).get();
 				div = doc.select("div.synonyms span.text");// .select("span");
 			} catch (IOException e1) {
 				System.out.println("Could not access url for synonyms");
