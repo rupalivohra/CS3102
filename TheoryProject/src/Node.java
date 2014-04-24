@@ -1,5 +1,6 @@
 //import java.util.ArrayList;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 //Nodes = words; edges go between related words (accessible from array list).
 public class Node implements Comparable<Node> {
@@ -69,7 +70,7 @@ public class Node implements Comparable<Node> {
 			this.incDegree();
 			n.getConnected().add(this);
 			n.incDegree();
-			System.out.println("Connected " + this + " to " + n);
+			// System.out.println("Connected " + this + " to " + n);
 		}
 	}
 
@@ -103,6 +104,7 @@ public class Node implements Comparable<Node> {
 		return true;
 	}
 
+	@Override
 	public int compareTo(Node no) {
 		Integer object1 = this.getFreq();
 		Integer object2 = no.getFreq();
