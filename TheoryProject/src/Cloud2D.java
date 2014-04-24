@@ -11,9 +11,10 @@ public class Cloud2D {
 	public static void generate() {
 //		Frame gc = new Frame();
 		JFrame frame = new JFrame("Title here");
-		frame.setSize(2000, 800);
-		Rectangle bounds = frame.getBounds();
-		frame.setLocation(10 + bounds.x, 10 + bounds.y);
+		frame.setSize(1650, 1080);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		Rectangle bounds = frame.getBounds();
+		frame.setLocation(0, 0);
 //		System.out.println(bounds);
 //		f.setDefaultLookAndFeelDecorated(true);
 		frame.setVisible(true);
@@ -27,6 +28,6 @@ public class Cloud2D {
 		Font font = new Font("RupaliHandwrite", Font.PLAIN, 100);
 //		Font f = new Font(fonts[377]);
 		g.setFont(font);
-		g.drawString(s, (int) bounds.getCenterX(), (int)bounds.getCenterY());
+		g.drawString(s, 500, 500);
 	}
 }
