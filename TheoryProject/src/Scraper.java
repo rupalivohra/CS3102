@@ -41,9 +41,7 @@ public class Scraper {
 			if (!n.getWord().equals(""))
 				clo.add(n);
 		}
-//		Cloud c = new Cloud();
-//		c.getCloud(clo);
-//		c.generate();
+
 		Cloud2D c = new Cloud2D();
 		c.generate();
 
