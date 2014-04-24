@@ -41,7 +41,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -90,6 +89,12 @@ class CustomComponent extends JComponent {
 		return new Dimension(1000, 800);
 	}
 
+	public void getBucket() {
+		for (int i = 0; i < create.size(); ++i) {
+			System.out.println(create.get(i).getWord());
+		}
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		for (Node n : create) {
@@ -97,6 +102,7 @@ class CustomComponent extends JComponent {
 			g.drawString(n.getWord(), n.getFreq() * n.getFreq(), n.getFreq()
 					* n.getFreq());
 		}
+		getBucket();
 		super.paintComponent(g);
 		g.setColor(Color.red);
 	}
