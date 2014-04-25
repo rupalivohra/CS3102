@@ -25,15 +25,15 @@ public class Node implements Comparable<Node> {
 		connected = new ArrayList<Node>();
 		this.fontSize = 0;
 	}
-	
+
 	public int getFontSize() {
 		return this.fontSize;
 	}
-	
+
 	public void setFontSize(int size) {
 		this.fontSize = size;
 	}
-	
+
 	public int getDegree() {
 		return this.degree;
 	}
@@ -119,6 +119,11 @@ public class Node implements Comparable<Node> {
 	public int compareTo(Node no) {
 		Integer object1 = this.getFreq();
 		Integer object2 = no.getFreq();
+		if (object1 == object2) {
+			Integer ob = this.getConnected().size();
+			Integer ob2 = no.getConnected().size();
+			return ob.compareTo(ob2);
+		}
 		return object1.compareTo(object2);
 	}
 }
