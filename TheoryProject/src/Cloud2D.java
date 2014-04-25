@@ -30,10 +30,15 @@ public class Cloud2D {
 //		Font f = new Font(fonts[377]);
 		g.setFont(font);
 		g.drawString(s, 500, 500);
-		addText(words);
+		addText(g, words);
 	}
 	
-	public static void addText(ArrayList<Node> words) {
-	
+	public static void addText(Graphics g, ArrayList<Node> words) {
+		for (Node n: words) {
+			Font font = new Font("Verdana", Font.PLAIN, n.getFontSize());
+			g.drawString(n.getWord(), 250, 250);
+			//todo: placement on pane (adjusting the 250, 250 above based on relatedness)
+			//consider: x and y are related. y and z are related. x and z are not related.
+		}
 	}
 }
