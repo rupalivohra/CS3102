@@ -42,7 +42,44 @@ public class Scraper {
 			if (!n.getWord().equals(""))
 				clo.add(n);
 		}
+		for (int i = 0; i < clo.size(); ++i) {
+			if (clo.get(i).getFreq() == 1) {
+				clo.remove(i);
+				i--;
+			}
+		}
 		Collections.sort(clo);
+
+		if (clo.size() >= 100) {
+			for (int i = 0; i < clo.size() - 100; i++) {
+				clo.remove(i);
+			}
+		}
+
+		for (int i = 0; i < clo.size(); ++i) {
+			int number = clo.size() / 10;
+			if (i < number) {
+				clo.get(i).setFontSize(25);
+			} else if (i < 2 * number) {
+				clo.get(i).setFontSize(30);
+			} else if (i < 3 * number) {
+				clo.get(i).setFontSize(35);
+			} else if (i < 4 * number) {
+				clo.get(i).setFontSize(40);
+			} else if (i < 5 * number) {
+				clo.get(i).setFontSize(45);
+			} else if (i < 6 * number) {
+				clo.get(i).setFontSize(50);
+			} else if (i < 7 * number) {
+				clo.get(i).setFontSize(55);
+			} else if (i < 8 * number) {
+				clo.get(i).setFontSize(60);
+			} else if (i < 9 * number) {
+				clo.get(i).setFontSize(65);
+			} else if (i < 10 * number) {
+				clo.get(i).setFontSize(70);
+			}
+		}
 
 		Cloud2D c = new Cloud2D();
 		c.generate(clo);

@@ -34,8 +34,6 @@ public class Cloud2D {
 	}
 	
 	public static void addText(ArrayList<Node> words) {
-		for (Node n: words) {
-			
-		}
+	
 	}
 }
