@@ -1,9 +1,10 @@
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
 
 import javax.swing.JFrame;
 
@@ -35,18 +36,21 @@ public class Cloud2D {
 	}
 
 	public static void addText(Graphics g, ArrayList<Node> words) {
-		Random rand = new Random();
-		int firstX = 0;
-		for (Node n : words) {
-			// firstX = firstX + n.getFontSize() * n.getWord().length();
-			Font font = new Font("Verdana", Font.PLAIN, n.getFontSize());
-			g.setFont(font);
-			// g.drawString(n.getWord(), firstX, 50 + n.getFontSize());
-			g.drawString(n.getWord(), rand.nextInt(1600), rand.nextInt(900));
-			// todo: placement on pane (adjusting the 250, 250 above based on0
-			// relatedness)
-			// consider: x and y are related. y and z are related. x and z are
-			// not related.
+		Collections.shuffle(words);
+		FontMetrics fm = g.getFontMetrics();
+		int j = 30;
+		int i = 30;
+		for (int h = 0; h < words.size(); ++h) {
+			if (j < 1500) {
+				Font font = new Font("Verdana", Font.PLAIN, words.get(h)
+						.getFontSize());
+				g.setFont(font);
+				g.drawString(words.get(h).getWord(), j, i);
+				j += g.getFontMetrics().stringWidth(words.get(h).getWord() + 1);
+			} else {
+				j = 30;
+				i += g.getFontMetrics().getHeight();
+			}
 		}
 	}
 }

@@ -59,25 +59,25 @@ public class Scraper {
 		for (int i = 0; i < clo.size(); ++i) {
 			int number = clo.size() / 10;
 			if (i < number) {
-				clo.get(i).setFontSize(25);
+				clo.get(i).setFontSize(10);
 			} else if (i < 2 * number) {
-				clo.get(i).setFontSize(30);
+				clo.get(i).setFontSize(13);
 			} else if (i < 3 * number) {
-				clo.get(i).setFontSize(35);
+				clo.get(i).setFontSize(16);
 			} else if (i < 4 * number) {
-				clo.get(i).setFontSize(40);
+				clo.get(i).setFontSize(19);
 			} else if (i < 5 * number) {
-				clo.get(i).setFontSize(45);
+				clo.get(i).setFontSize(22);
 			} else if (i < 6 * number) {
-				clo.get(i).setFontSize(50);
+				clo.get(i).setFontSize(25);
 			} else if (i < 7 * number) {
-				clo.get(i).setFontSize(55);
+				clo.get(i).setFontSize(28);
 			} else if (i < 8 * number) {
-				clo.get(i).setFontSize(60);
+				clo.get(i).setFontSize(31);
 			} else if (i < 9 * number) {
-				clo.get(i).setFontSize(65);
+				clo.get(i).setFontSize(34);
 			} else if (i < 10 * number) {
-				clo.get(i).setFontSize(70);
+				clo.get(i).setFontSize(37);
 			}
 		}
 
