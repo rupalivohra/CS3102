@@ -1,6 +1,6 @@
 //import java.util.ArrayList;
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 //Nodes = words; edges go between related words (accessible from array list).
 public class Node implements Comparable<Node> {
@@ -10,12 +10,14 @@ public class Node implements Comparable<Node> {
 	// private ArrayList<Node> connected;
 	private int frequency;
 	private int fontSize;
+	private Color fontColor;
 
 	public Node() {
 		this.frequency = 1;
 		this.degree = 0;
 		connected = new ArrayList<Node>();
 		this.fontSize = 0;
+		this.fontColor = new Color(0, 0, 0);
 	}
 
 	public Node(String w) {
@@ -24,6 +26,14 @@ public class Node implements Comparable<Node> {
 		this.frequency = 1;
 		connected = new ArrayList<Node>();
 		this.fontSize = 0;
+	}
+
+	public Color getFontColor() {
+		return this.fontColor;
+	}
+
+	public void setFontColor(Color fontC) {
+		this.fontColor = fontC;
 	}
 
 	public int getFontSize() {

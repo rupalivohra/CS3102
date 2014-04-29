@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,47 +43,6 @@ public class Scraper {
 			if (!n.getWord().equals(""))
 				clo.add(n);
 		}
-		for (int i = 0; i < clo.size(); ++i) {
-			if (clo.get(i).getFreq() == 1) {
-				clo.remove(i);
-				i--;
-			}
-		}
-		Collections.sort(clo);
-
-		if (clo.size() >= 100) {
-			for (int i = 0; i < clo.size() - 100; i++) {
-				clo.remove(i);
-			}
-		}
-
-		for (int i = 0; i < clo.size(); ++i) {
-			int number = clo.size() / 10;
-			if (i < number) {
-				clo.get(i).setFontSize(10);
-			} else if (i < 2 * number) {
-				clo.get(i).setFontSize(13);
-			} else if (i < 3 * number) {
-				clo.get(i).setFontSize(16);
-			} else if (i < 4 * number) {
-				clo.get(i).setFontSize(19);
-			} else if (i < 5 * number) {
-				clo.get(i).setFontSize(22);
-			} else if (i < 6 * number) {
-				clo.get(i).setFontSize(25);
-			} else if (i < 7 * number) {
-				clo.get(i).setFontSize(28);
-			} else if (i < 8 * number) {
-				clo.get(i).setFontSize(31);
-			} else if (i < 9 * number) {
-				clo.get(i).setFontSize(34);
-			} else if (i < 10 * number) {
-				clo.get(i).setFontSize(37);
-			}
-		}
-
-		Cloud2D c = new Cloud2D();
-		c.generate(clo);
 
 		// Map should be populated with each word as a key
 		System.out.println(storage.keySet());
@@ -128,6 +88,59 @@ public class Scraper {
 				System.out.println(entry.getValue().getConnected());
 			}
 		}
+		Collections.sort(clo);
+
+		if (clo.size() >= 100) {
+			for (int i = 0; i < clo.size() - 100; i++) {
+				clo.remove(i);
+			}
+		}
+
+		for (int i = 0; i < clo.size(); ++i) {
+			int number = clo.size() / 10;
+			if (i < number) {
+				clo.get(i).setFontSize(12);
+			} else if (i < 2 * number) {
+				clo.get(i).setFontSize(15);
+			} else if (i < 3 * number) {
+				clo.get(i).setFontSize(18);
+			} else if (i < 4 * number) {
+				clo.get(i).setFontSize(21);
+			} else if (i < 5 * number) {
+				clo.get(i).setFontSize(24);
+			} else if (i < 6 * number) {
+				clo.get(i).setFontSize(27);
+			} else if (i < 7 * number) {
+				clo.get(i).setFontSize(30);
+			} else if (i < 8 * number) {
+				clo.get(i).setFontSize(33);
+			} else if (i < 9 * number) {
+				clo.get(i).setFontSize(36);
+			} else if (i < 10 * number) {
+				clo.get(i).setFontSize(39);
+			}
+		}
+
+		int r = 0, g = 0, b = 0;
+		for (int i = 0; i < clo.size(); ++i) {
+			if (clo.get(i).getConnected().size() != 0) {
+				r += 5;
+				g += 5;
+				b += 5;
+				clo.get(i).setFontColor(new Color(r, g, b));
+				for (int j = 0; j < clo.get(i).getConnected().size(); j++) {
+					if (clo.contains(clo.get(i).getConnected().get(j))) {
+						for (int k = 0; k < clo.size(); ++k) {
+							if (clo.get(i) == clo.get(i).getConnected().get(j)) {
+								clo.get(i).setFontColor(new Color(r, g, b));
+							}
+						}
+					}
+				}
+			}
+		}
+		Cloud2D c = new Cloud2D();
+		c.generate(clo);
 	}
 
 	public static List<String> getWords(String raw) {
