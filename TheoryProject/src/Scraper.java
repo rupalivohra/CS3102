@@ -77,33 +77,12 @@ public class Scraper {
 			}
 		}
 
-		int r = 0, g = 0, b = 0;
-		for (int i = 0; i < clo.size(); ++i) {
-			if (clo.get(i).getConnected().size() != 0) {
-				r += 5;
-				g += 5;
-				b += 5;
-				clo.get(i).setFontColor(new Color(r, g, b));
-				for (int j = 0; j < clo.get(i).getConnected().size(); j++) {
-					if (clo.contains(clo.get(i).getConnected().get(j))) {
-						for (int k = 0; k < clo.size(); ++k) {
-							if (clo.get(i) == clo.get(i).getConnected().get(j)) {
-								clo.get(i).setFontColor(new Color(r, g, b));
-							}
-						}
-					}
-				}
-			}
-		}
-		Cloud2D c = new Cloud2D();
-		c.generate(clo);
-
 		// Map should be populated with each word as a key
-		System.out.println(storage.keySet());
+//		System.out.println(storage.keySet());
 		// 3. Add related words based on thesaurus
 		String url = "http://www.thesaurus.com/browse/";
-		for (Entry<String, Node> entry : storage.entrySet()) {
-			String key = entry.getKey();
+		for (Node entry : clo) {
+			String key = entry.getWord();
 			// Node k = new Node(key);
 			// System.out.println(key);
 			String url2 = url + key;
@@ -135,13 +114,34 @@ public class Scraper {
 			System.out
 					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 		}
-
-		for (Entry<String, Node> entry : storage.entrySet()) {
-			if (entry.getValue().getConnected().size() > 0) {
-				System.out.print("Connected: " + entry.getValue() + "to: ");
-				System.out.println(entry.getValue().getConnected());
+		
+		int r = 0, g = 0, b = 0;
+		for (int i = 0; i < clo.size(); ++i) {
+			if (clo.get(i).getConnected().size() != 0) {
+				r += 5;
+				g += 5;
+				b += 5;
+				clo.get(i).setFontColor(new Color(r, g, b));
+				for (int j = 0; j < clo.get(i).getConnected().size(); j++) {
+					if (clo.contains(clo.get(i).getConnected().get(j))) {
+						for (int k = 0; k < clo.size(); ++k) {
+							if (clo.get(i) == clo.get(i).getConnected().get(j)) {
+								clo.get(i).setFontColor(new Color(r, g, b));
+							}
+						}
+					}
+				}
 			}
 		}
+		Cloud2D c = new Cloud2D();
+		c.generate(clo);
+
+//		for (Entry<String, Node> entry : storage.entrySet()) {
+//			if (entry.getValue().getConnected().size() > 0) {
+//				System.out.print("Connected: " + entry.getValue() + "to: ");
+//				System.out.println(entry.getValue().getConnected());
+//			}
+//		}
 	}
 
 	public static List<String> getWords(String raw) {
