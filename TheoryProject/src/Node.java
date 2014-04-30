@@ -129,11 +129,11 @@ public class Node implements Comparable<Node> {
 	public int compareTo(Node no) {
 		Integer object1 = this.getFreq();
 		Integer object2 = no.getFreq();
-		if (object1 == object2) {
-			Integer ob = this.getConnected().size();
-			Integer ob2 = no.getConnected().size();
-			return ob.compareTo(ob2);
-		}
-		return object1.compareTo(object2);
+//		if (object1 == object2) {
+//			Integer ob = this.getConnected().size();
+//			Integer ob2 = no.getConnected().size();
+//			return ob.compareTo(ob2);
+//		}
+		return object2-object1;
 	}
 }

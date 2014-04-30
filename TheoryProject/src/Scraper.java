@@ -24,7 +24,7 @@ public class Scraper {
 		System.out.println("going for " + targurl);
 		Document dc = getURL(targurl);
 		String content = dc.select("text").first().text();
-		System.out.println(getWords(content));
+		// System.out.println(getWords(content));
 		List<String> wordList = getWords(content);
 
 		// merging Map.java:
@@ -38,18 +38,36 @@ public class Scraper {
 				storage.get(wordList.get(i)).incFreq();
 			}
 		}
-		ArrayList<Node> clo = new ArrayList<Node>();
+		ArrayList<Node> cloMore = new ArrayList<Node>();
 		for (Node n : storage.values()) {
 			if (!n.getWord().equals(""))
-				clo.add(n);
+				cloMore.add(n);
 		}
 
-		Collections.sort(clo);
+		Collections.sort(cloMore);
 
-		if (clo.size() >= 100) {
-			for (int i = 0; i < clo.size() - 100; i++) {
-				clo.remove(i);
-			}
+		ArrayList<Node> mid;
+		System.out.println("size before cut: " + cloMore.size());
+
+		if (cloMore.size() > 100) {
+			mid = new ArrayList<Node>(cloMore.subList(0, 100));
+		} else {
+			mid = cloMore;
+		}
+		System.out.println("size after cut: " + mid.size());
+
+		// Map should be populated with each word as a key
+		// System.out.println(storage.keySet());
+		// 3. Add related words based on thesaurus
+		ArrayList<Node> relevant = processRelevancy(mid, storage);
+		mid.addAll(relevant);
+		System.out.println("size after joining relevant: " + mid.size());
+		// processRelevancy(clo, storage);
+		ArrayList<Node> clo;
+		if (mid.size() > 150) {
+			clo = new ArrayList<Node>(mid.subList(0, 200));
+		} else {
+			clo = mid;
 		}
 
 		for (int i = 0; i < clo.size(); ++i) {
@@ -77,79 +95,28 @@ public class Scraper {
 			}
 		}
 
-		// Map should be populated with each word as a key
-//		System.out.println(storage.keySet());
-		// 3. Add related words based on thesaurus
-		String url = "http://www.thesaurus.com/browse/";
-		int counter = 0;
-		for (Node entry : clo) {
-			String key = entry.getWord();
-			// Node k = new Node(key);
-			// System.out.println(key);
-			String url2 = url + key;
-			// Some assistance from Greg Colella here
-			Document doc;
-			Elements div = null;
-			try {
-				doc = Jsoup
-						.connect(url2)
-						.userAgent(
-								"Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-						.referrer("http://www.google.com").timeout(0).get();
-				div = doc.select("div.synonyms span.text");// .select("span");
-			} catch (IOException e1) {
-				System.out.println("Could not access url for synonyms");
-				e1.printStackTrace();
-			}
-			if (div != null) {
-				for (Element e : div) {
-					String thiselement = e.text();
-					// if both the synonym and the original word are in the
-					// article
-					if (storage.containsKey(thiselement)) {
-						storage.get(key).connectNode(storage.get(thiselement));
-					}
-				}
-			}
-			++counter;
-			System.out.println(counter+ ": " + entry.getWord());
-			System.out
-					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
-		}
-		
+		// System.out
+		// .println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+
 		Random rand = new Random();
 		int r = 0, g = 0, b = 0;
 		for (int i = 0; i < clo.size(); i++) {
-			if (clo.get(i).getConnected().size() != 0 && clo.get(i).getFontColor() == null) {
+			if (clo.get(i).getFontColor() == null) {
 				int rRand = rand.nextInt((41) + 10);
 				int gRand = rand.nextInt((41) + 10);
 				int bRand = rand.nextInt((41) + 10);
-				r = (r+rRand)%255;
-				g = (g+gRand)%255;
-				b = (b+bRand)%255;
+				r = (r + rRand) % 255;
+				g = (g + gRand) % 255;
+				b = (b + bRand) % 255;
 				Color col = new Color(r, g, b);
-				System.out.println(col);
 				clo.get(i).setFontColor(col);
 				for (int j = 0; j < clo.get(i).getConnected().size(); j++) {
-//					if (clo.contains(clo.get(i).getConnected().get(j))) {
-//						for (int k = 0; k < clo.size(); ++k) {
-//							if (clo.get(i) == clo.get(i).getConnected().get(j)) {
 					clo.get(i).getConnected().get(j).setFontColor(col);
-//							}
-//						}
-//					}
 				}
 			}
 		}
 		Cloud2D c = new Cloud2D();
 		c.generate(clo, line);
-
-//		for (Entry<String, Node> entry : storage.entrySet()) {
-//			if (entry.getValue().getConnected().size() > 0) {
-//				System.out.print("Connected: " + entry.getValue() + "to: ");
-//				System.out.println(entry.getValue().getConnected());
-//			}
-//		}
 	}
 
 	public static List<String> getWords(String raw) {
@@ -245,5 +212,49 @@ public class Scraper {
 
 	public static String findCorrectURL(String articletitle) {
 		return followRedirects(firstGuessURL(articletitle));
+	}
+
+	public static ArrayList<Node> processRelevancy(ArrayList<Node> clo,
+			TreeMap<String, Node> storage) {
+		ArrayList<Node> relevant = new ArrayList<Node>();
+		String url = "http://www.thesaurus.com/browse/";
+		int counter = 0;
+		for (Node entry : clo) {
+			String key = entry.getWord();
+			// Node k = new Node(key);
+			// System.out.println(key);
+			String url2 = url + key;
+			// Some assistance from Greg Colella here
+			Document doc;
+			Elements div = null;
+			try {
+				doc = Jsoup
+						.connect(url2)
+						.userAgent(
+								"Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+						.referrer("http://www.google.com").timeout(0).get();
+				div = doc.select("div.synonyms span.text");// .select("span");
+			} catch (IOException e1) {
+				System.out.println("Could not access url for synonyms");
+				e1.printStackTrace();
+			}
+			if (div != null) {
+				for (Element e : div) {
+					String thiselement = e.text();
+					// if both the synonym and the original word are in the
+					// article
+					if (storage.containsKey(thiselement)) {
+						storage.get(thiselement).connectNode(
+								storage.get(thiselement));
+						if (!relevant.contains(thiselement)) {
+							relevant.add(storage.get(thiselement));
+						}
+					}
+				}
+			}
+			++counter;
+			System.out.println(counter + ": " + entry.getWord());
+		}
+		return relevant;
 	}
 }
