@@ -112,7 +112,7 @@ public class Scraper {
 				}
 			}
 			++counter;
-			System.out.println(counter);
+			System.out.println(counter+ ": " + entry.getWord());
 			System.out
 					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 		}
