@@ -7,7 +7,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.TreeMap;
 
@@ -81,6 +81,7 @@ public class Scraper {
 //		System.out.println(storage.keySet());
 		// 3. Add related words based on thesaurus
 		String url = "http://www.thesaurus.com/browse/";
+		int counter = 0;
 		for (Node entry : clo) {
 			String key = entry.getWord();
 			// Node k = new Node(key);
@@ -110,31 +111,38 @@ public class Scraper {
 					}
 				}
 			}
-			System.out.println();
+			++counter;
+			System.out.println(counter);
 			System.out
 					.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 		}
 		
+		Random rand = new Random();
 		int r = 0, g = 0, b = 0;
-		for (int i = 0; i < clo.size(); ++i) {
-			if (clo.get(i).getConnected().size() != 0) {
-				r += 5;
-				g += 5;
-				b += 5;
-				clo.get(i).setFontColor(new Color(r, g, b));
+		for (int i = 0; i < clo.size(); i++) {
+			if (clo.get(i).getConnected().size() != 0 && clo.get(i).getFontColor() == null) {
+				int rRand = rand.nextInt((41) + 10);
+				int gRand = rand.nextInt((41) + 10);
+				int bRand = rand.nextInt((41) + 10);
+				r = (r+rRand)%255;
+				g = (g+gRand)%255;
+				b = (b+bRand)%255;
+				Color col = new Color(r, g, b);
+				System.out.println(col);
+				clo.get(i).setFontColor(col);
 				for (int j = 0; j < clo.get(i).getConnected().size(); j++) {
-					if (clo.contains(clo.get(i).getConnected().get(j))) {
-						for (int k = 0; k < clo.size(); ++k) {
-							if (clo.get(i) == clo.get(i).getConnected().get(j)) {
-								clo.get(i).setFontColor(new Color(r, g, b));
-							}
-						}
-					}
+//					if (clo.contains(clo.get(i).getConnected().get(j))) {
+//						for (int k = 0; k < clo.size(); ++k) {
+//							if (clo.get(i) == clo.get(i).getConnected().get(j)) {
+					clo.get(i).getConnected().get(j).setFontColor(col);
+//							}
+//						}
+//					}
 				}
 			}
 		}
 		Cloud2D c = new Cloud2D();
-		c.generate(clo);
+		c.generate(clo, line);
 
 //		for (Entry<String, Node> entry : storage.entrySet()) {
 //			if (entry.getValue().getConnected().size() > 0) {

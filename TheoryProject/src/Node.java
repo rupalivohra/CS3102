@@ -17,7 +17,7 @@ public class Node implements Comparable<Node> {
 		this.degree = 0;
 		connected = new ArrayList<Node>();
 		this.fontSize = 0;
-		this.fontColor = new Color(0, 0, 0);
+		this.fontColor = null;
 	}
 
 	public Node(String w) {
