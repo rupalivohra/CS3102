@@ -40,7 +40,7 @@ public class Scraper {
 		}
 		ArrayList<Node> cloMore = new ArrayList<Node>();
 		for (Node n : storage.values()) {
-			if (!n.getWord().equals(""))
+			if (!n.getWord().equals("") && n.getWord().length() > 1)
 				cloMore.add(n);
 		}
 
@@ -60,11 +60,15 @@ public class Scraper {
 		// System.out.println(storage.keySet());
 		// 3. Add related words based on thesaurus
 		ArrayList<Node> relevant = processRelevancy(mid, storage);
-		mid.addAll(relevant);
+		for (int i = 0; i < relevant.size(); ++i) {
+			if (!mid.contains(relevant.get(i)))
+				mid.add(relevant.get(i));
+		}
 		System.out.println("size after joining relevant: " + mid.size());
+		Collections.sort(mid);
 		// processRelevancy(clo, storage);
 		ArrayList<Node> clo;
-		if (mid.size() > 150) {
+		if (mid.size() > 200) {
 			clo = new ArrayList<Node>(mid.subList(0, 200));
 		} else {
 			clo = mid;
@@ -73,26 +77,27 @@ public class Scraper {
 		for (int i = 0; i < clo.size(); ++i) {
 			int number = clo.size() / 10;
 			if (i < number) {
-				clo.get(i).setFontSize(12);
+				clo.get(i).setFontSize(57);
 			} else if (i < 2 * number) {
-				clo.get(i).setFontSize(15);
+				clo.get(i).setFontSize(52);
 			} else if (i < 3 * number) {
-				clo.get(i).setFontSize(18);
+				clo.get(i).setFontSize(47);
 			} else if (i < 4 * number) {
-				clo.get(i).setFontSize(21);
+				clo.get(i).setFontSize(42);
 			} else if (i < 5 * number) {
-				clo.get(i).setFontSize(24);
+				clo.get(i).setFontSize(37);
 			} else if (i < 6 * number) {
-				clo.get(i).setFontSize(27);
+				clo.get(i).setFontSize(32);
 			} else if (i < 7 * number) {
-				clo.get(i).setFontSize(30);
+				clo.get(i).setFontSize(27);
 			} else if (i < 8 * number) {
-				clo.get(i).setFontSize(33);
+				clo.get(i).setFontSize(22);
 			} else if (i < 9 * number) {
-				clo.get(i).setFontSize(36);
+				clo.get(i).setFontSize(17);
 			} else if (i < 10 * number) {
-				clo.get(i).setFontSize(39);
+				clo.get(i).setFontSize(12);
 			}
+			clo.get(0).setFontSize(65);
 		}
 
 		// System.out
