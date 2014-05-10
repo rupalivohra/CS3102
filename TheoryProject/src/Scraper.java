@@ -124,6 +124,7 @@ public class Scraper {
 		c.generate(clo, line);
 	}
 
+	@SuppressWarnings("resource")
 	public static List<String> getWords(String raw) {
 		Scanner scan = new Scanner(raw);
 		scan.useDelimiter("[\\* {\\[\\|,\"]+");
@@ -144,6 +145,7 @@ public class Scraper {
 				lst.add(list);
 			}
 		}
+
 		ArrayList<String> bad = new ArrayList<String>();
 		bad.add("Link");
 		for (String s : lst) {
@@ -171,6 +173,31 @@ public class Scraper {
 			if (lst.contains(commonWords.get(i))) {
 				lst.remove(commonWords.get(i));
 				i--;
+			}
+		}
+		//removing common suffixes and keeping the meat of the word
+		Scanner sufScan;
+		ArrayList<String> suffixes = new ArrayList<String>();
+		try {
+			sufScan = new Scanner(new File("commonSuffixes.txt"));
+			while (sufScan.hasNext()) {
+				suffixes.add(sufScan.next());
+			}
+			sufScan.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		for (int i = 0; i < suffixes.size(); i++) {
+			for (int j = 0; j < lst.size(); j++) {
+				if (lst.get(j).endsWith(suffixes.get(i))) {
+					String tempCheck = lst.get(j).substring(0,lst.get(j).length() - suffixes.get(i).length());
+//					System.out.print("Word before: " + lst.get(j) + "; word after: " + tempCheck);
+					if (lst.contains(tempCheck)) {
+						lst.set(j, tempCheck);
+//						System.out.println("; the new word: " + lst.get(j));
+					}
+				}
 			}
 		}
 
@@ -229,7 +256,7 @@ public class Scraper {
 			// Node k = new Node(key);
 			// System.out.println(key);
 			String url2 = url + key;
-			// Some assistance from Greg Colella here
+			// assistance from Greg Colella for the try/catch block 
 			Document doc;
 			Elements div = null;
 			try {
